@@ -15,7 +15,7 @@
 
 자바스크립트에서는 여러가지 방법으로 함수 선언이 가능하다.
 
-### 1-1. function 키워드를 이용한 선언
+### 1-1. 함수선언식
 
 ```javascript
 function sum1(a,b){
@@ -37,17 +37,33 @@ let sum2 = function(a,b){
 
 ### 1-3. ES6 Arrow Function🤟
 
+얘도 마찬가지로 익명함수 : 함수 선언할때 이름이 없음
+
 ```javascript
 let sum3 = (a, b) => {
     return a+b
 }
 
-// 4. ES6 Arrow Function 축약1
+// 4. ES6 Arrow Function 축약, return 생략가능!
 let sum4 = (a, b) => a+b 
-
-// 5. ES6 Arrow Function 축약2
-let sum5 = a => a+2
 ```
+<br>
+
+>#### 자바스크립트의 this
+>
+>```javascript
+>let sum2 = function(a,b){
+>    this // 실행 시점에서의 함수 객체를 바라봄
+>    return a+b
+>}
+>```
+>
+>```javascript
+>let sum3 = (a, b) => {
+>    this // 생성 시점의 함수 객체를 바라봄
+>    return a+b
+>}
+>```
 
 
 
