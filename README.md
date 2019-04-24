@@ -16,14 +16,43 @@
 
 <br>
 
+*2019.04.24*
+
+>XMLHttpRequest(), filter(), **Non-blocking와 Asynchronous**
+>
+>  [HTTP 요청](./2019-04-24-javascript.md)
+
+<br>
 
 
-# Node.js
+
+# Javascript project
 
 *2019.04.23*
 
-> node.js 설치 및 설정
+> node.js 설치 및 설정, Javascript function project
 >
->  [Node.js Basic](./2019-04-23-node.js.md)
+>  [function](./2019-04-23-function.md)
 
 <br>
+
+*2019.04.24*
+
+>giphy api를 사용한 간단한 이미지 검색
+>
+>  [AJAX API 호출](./2019-04-23_AJAX 호출.md)
+
+<br>
+
+
+
+# WEB
+
+*2019.04.24*
+
+> HTTP & RESTful Architecture : URL, URI, REST API
+>
+>   [HTTP & RESTful Architecture](./2019-04-24-http&restful)
+
+<br>
+
