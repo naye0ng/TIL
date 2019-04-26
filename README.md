@@ -32,7 +32,13 @@
 
 <br>
 
+*2019.04.26*
 
+> callback, **Promise**, **async와 await**
+>
+>   [Promis, async와 await](./2019-04-26-javascript.md)
+
+<br>
 
 # Javascript project
 
@@ -48,7 +54,7 @@
 
 >giphy api를 사용한 간단한 이미지 검색
 >
->  [AJAX API 호출](./2019-04-23-AJAX 호출.md)
+>  [AJAX API 호출](./2019-04-23-AJAX_호출.md)
 
 <br>
 
