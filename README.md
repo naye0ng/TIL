@@ -42,12 +42,19 @@
 
 *2019.04.30*
 
+> **javscript class**
+>
+>   [javascript class](./2019-04-30-class.md)
+
+<br>
+
+*2019.04.30*
+
 > **Vue.js**
 >
 >   [Vue.js](./2019-04-30-vue.js.md)
 
 <br>
-
 *2019.05.01*
 
 > todoapp만들기 : **localstorage**,  **vue.js directive**
