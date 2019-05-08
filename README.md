@@ -1,6 +1,6 @@
 # Javascript
 
-*2019.04.22*
+2019.04.22
 
 > Javascript 기본, 자료형(var const, let, list, dictionary), 함수
 >
@@ -8,7 +8,7 @@
 
 <br>
 
-*2019.04.23*
+2019.04.23
 
 >**ES6 array helper methods**(forEach, map, find, filter, every, some),  type coercion and ===
 >
@@ -16,7 +16,7 @@
 
 <br>
 
-*2019.04.24*
+2019.04.24
 
 >XMLHttpRequest(), filter(), **Non-blocking와 Asynchronous**
 >
@@ -24,7 +24,7 @@
 
 <br>
 
-*2019.04.25*
+2019.04.25
 
 > 자바스크립트의 비동기적 특징으로 인한 콜백함수
 >
@@ -32,7 +32,7 @@
 
 <br>
 
-*2019.04.26*
+2019.04.26
 
 > callback, **Promise**, **async와 await**
 >
@@ -40,7 +40,7 @@
 
 <br>
 
-*2019.04.30*
+2019.04.30
 
 > **javscript class**
 >
@@ -48,24 +48,25 @@
 
 <br>
 
-*2019.04.30*
+2019.04.30
 
 > **Vue.js**
 >
 >   [Vue.js](./2019-04-30-vue.js.md)
 
 <br>
-*2019.05.01*
+
+2019.05.01
 
 > todoapp만들기 : **localstorage**,  **vue.js directive**
 >
->   [Vue.js](./2019-04-30-vue.js.md)
+>   [Vue.js](./2019-05-01-javascript.md)
 
 <br>
 
 # Javascript project
 
-*2019.04.23*
+2019.04.23
 
 > node.js 설치 및 설정, Javascript function project
 >
@@ -73,7 +74,7 @@
 
 <br>
 
-*2019.04.24*
+2019.04.24
 
 >giphy api를 사용한 간단한 이미지 검색
 >
@@ -81,7 +82,7 @@
 
 <br>
 
-*2019.05.01*
+2019.05.01
 
 > vue.js를 이용한 간단한 영화검색
 >
@@ -89,7 +90,7 @@
 
 <br>
 
-*2019.05.02*
+2019.05.02
 
 > vue.js를 이용한 이미지 검색
 >
@@ -97,7 +98,7 @@
 
 <br>
 
-*2019.05.03*
+2019.05.03
 
 > vue.js를 이용한 증감버튼 만들기, **computed와 method의 차이점**
 >
@@ -107,11 +108,20 @@
 
 # WEB
 
-*2019.04.24*
+2019.04.24
 
 > HTTP & RESTful Architecture : URL, URI, REST API
 >
->   [HTTP & RESTful Architecture](./2019-04-24-http&restful)
+>   [HTTP & RESTful Architecture](./2019-04-24-http&restful.md)
 
 <br>
 
+# Cloud
+
+2019.05.08
+
+>firebase 사용하기
+>
+>   [firebase 사용하기](./2019-05-08-firebase.md)
+
+<br>
