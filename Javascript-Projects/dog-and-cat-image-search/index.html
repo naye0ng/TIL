@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        img {
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <input id="one" type="radio" v-model='picked' value='Meow'>
+        <label for="one">고앵이</label>
+        <br>
+        <input id="two" type="radio" v-model='picked' value='Bowl'>
+        <label for="two">댕댕이</label>
+        <br>
+        <img v-bind:src="image" />
+        <!-- watch 테스트 -->
+        <input type="text" v-model='test'>
+    </div>
+
+
+    <script>
+        const dogAndCat = new Vue({
+            el : '#main',
+            data : {
+                picked : '',
+                image : '',
+                test:'',
+            },
+            // 어떤 값을 지켜보고 있다가 이벤트 발생
+            watch : {
+                picked : function(){
+                    this.picked === 'Meow'? this.getCatImage() : this.getDogImage()
+                },
+                // 이 함수는 watch가 어떤식으로 값을 트리거하는지 보여줌!
+                test : function(newValue, oldValue){
+                    console.log('new',newValue)
+                    console.log('old', oldValue)
+                },
+            },
+            methods : {
+                getCatImage: async function(){
+                    const URL = 'https://api.thecatapi.com/v1/images/search'
+                    const response = await axios.get(URL)
+                    this.image = response.data[0].url
+                },
+                getDogImage: async function(){
+                    const URL = 'https://dog.ceo/api/breeds/image/random'
+                    const response = await axios.get(URL)
+                    this.image = response.data.message
+                }
+            },
+        })
+    </script>
+</body>
+</html>

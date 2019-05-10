@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="main">
+        <!-- list -->
+        <div class="movie-entry-box" v-if="!isDetailPage">
+            <button v-for="genre in genres" @click="setGenre(genre.id)">{{ genre.name }}</button>
+            <button @click="getMovies">전체</button>
+            <div class="movie-entry" v-for="movie in movies" @click="setCurrentMovie(movie)">
+                <p>{{ movie.title }}</p>
+                <img :src="movie.poster_url" :alt="movie.title">
+            </div>
+        </div>
+        <!-- detail -->
+        <div class="movie-detail" v-if="isDetailPage">
+            <h4>{{ currentMovie.title }}</h4>
+            <img :src="currentMovie.poster_url" :alt="currentMovie.title">
+            <p>평균 평점 : {{ averageScore }}</p>
+            <p>{{ currentMovie.description }}</p>
+            <button @click="togglePage">목록</button>
+            <hr>
+            <textarea v-model="review.content"></textarea>
+            <input v-model="review.score" type="number" min="1" max="10" >
+            <button @click="postReview(currentMovie.id)">작성</button>
+            <div v-for="movieReview in movieReviews">
+                <p>{{movieReview.content}} - {{movieReview.score }} 점</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const app = new Vue({
+            el : '#main',
+            data : {
+                API_URL : 'https://nayeong-api-naye0ng.c9users.io/api/v1/',
+                movies : [],
+                isDetailPage : false,
+                currentMovie :{},
+                review : {
+                    content : '',
+                    score : 1,
+                },
+                movieReviews : [],
+                genres : [],
+            },
+            computed :{
+                averageScore : function(){
+                    const scores = this.movieReviews.map(review => review.score)
+                    let sum = 0
+                    scores.forEach(score=>{
+                        sum += score
+                    })
+                    return sum / scores.length
+                }
+            },
+            methods : {
+                togglePage : function(){
+                    this.isDetailPage = ! this.isDetailPage
+                },
+                getMovies : function(){
+                    // this.movies를 체이닝할 수 있는 promise 객체를 반환한다!
+                    return axios.get(this.API_URL+'movies/')
+                        .then(response => {
+                            this.movies = response.data
+                            return this.movie
+                        })
+                },
+                setCurrentMovie : function(movie){
+                    this.currentMovie = movie
+                    this.togglePage()
+                    this.getMovieReviews(movie.id)
+                },
+                postReview : function(movieId) {
+                    
+                    axios.post(this.API_URL+`movies/${movieId}/score/`,this.review)
+                        .then(response => {
+                            this.getMovieReviews(movieId)
+                            this.review.content = ''
+                            this.review.score = 1
+                        })
+                },
+                getMovieReviews : function(movieId){
+                    axios.get(this.API_URL+`movies/${movieId}/score/`)
+                        .then(reaponse => {
+                            this.movieReviews = reaponse.data
+                        })
+                },
+                getGenres : function(){
+                    axios.get(this.API_URL+'genres/')
+                        .then(response => {
+                            this.genres = response.data
+                        })
+                },
+                setGenre : function(genreId){
+                    this.getMovies()
+                        .then(movies =>{
+                            this.movies = this.movies.filter(movie => movie.genre === genreId)
+                        })
+                }
+            },
+            created : function() {
+                this.getMovies()
+                this.getGenres()
+            }
+        })
+    </script>
+</body>
+</html>

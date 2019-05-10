@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>색칠놀이</title>
+    <style>
+        .box {
+            width:50px;
+            height : 50px;
+            background-color: gray;
+            margin: 5px;
+            display: inline-block;
+        }
+        .red {
+            background-color: red;
+        }
+        .yellow { 
+            background-color: yellow;
+        }
+        .green {
+            background-color: green;
+        }
+        .blue {
+            background-color: blue;
+        }
+        .mouse{
+            background-color : pink;
+            width: 150px;
+            height : 150px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h3>1. 클릭이벤트를 사용한 직접 스타일 조작</h3>
+        <div @click="changeColor" :class="{red: changed}" class="box"></div>
+
+        <h3>2. methods를 사용한 스타일 조작(enter 혹은 space)</h3>
+        <div :style="{backgroundColor: specialColor}" class="box"></div>
+        <input type="text" @keyup.enter.space="enterChangeColor" v-model="colorValue">
+
+        <h3>3. computed를 사용한 스타일 조작</h3>
+        <div :style="inputColor" class="box"></div>
+        <input type="text" v-model="color">
+        
+        <h3>4. mouse의 x,y좌표 가져오기</h3>
+        <!-- 인자에 저절로 event를 넘긴다. -->
+        <div class="mouse" @mousemove="printCoordinate"></div>
+        <!-- 매게변수와 이벤트를 넘겨주려면, 이벤트는 $event를 사용해야함 -->
+        <div class="mouse" @mousemove="printCoordinate2(10, $event)">
+        </div>
+    </div>
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data : {
+                color : '',
+                colorValue : '',
+                specialColor :'',
+                changed : false,
+                userColor : '',
+            },
+            methods : {
+                changeColor : function(){
+                    this.changed = !this.changed
+                },
+                enterChangeColor : function(){
+                    this.specialColor = this.colorValue
+                },
+                //매게변수가 없는 경우에는 기본적으로 event를 넘긴다.
+                printCoordinate : function(event){
+                    console.log(event.clientX)
+                    console.log(event.clientY)
+                },
+                //이런식으로 매게변수를 넣을 수도 있다.
+                printCoordinate2 : function(num,event){
+                    console.log(num)
+                    console.log(event.clientX)
+                    console.log(event.clientY)
+                },
+            },
+            computed : {
+                inputColor : function() {
+                    return {backgroundColor: this.color}
+                }
+            }
+
+        })
+
+    </script>
+</body>
+</html>

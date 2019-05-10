@@ -1,12 +1,3 @@
-# Javascript - AJAX 호출
-
-*2019.04.23*
-
-
-
-### giphy api : 짤 검색
-
-```javascript
 // 1. input안의 값을 잡는다.
 const input = document.querySelector('#js-userinput')
 const button = document.querySelector('#js-go')
@@ -62,7 +53,5 @@ const pushToDom = (data) => {
     // insertBefore(넣을 값, 기준) 기준의 바로 앞쪽에 삽입된다.
     resultArea.insertBefore(gif, resultArea.firstChild)
 }
-```
-
 
 
