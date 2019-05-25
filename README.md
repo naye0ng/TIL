@@ -27,7 +27,7 @@
 - [Rest API -  Django-restframework 패키지](./Django/2019-05-07-django.md)
 - [Django Rest API 와  Vue.js 연동 - cors 이슈](./Django/2019-05-08-django.md)
 - [Heroku : Django 프로젝트 배포](./Django/2019-05-13-django.md)
-- [vue, Django 연동 - vue : delimiter 설정](./Django/ 2019-05-14-django.md)
+- [vue, Django 연동 - vue : delimiter 설정](./Django/2019-05-14-django.md)
 
 
 
