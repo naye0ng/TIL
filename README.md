@@ -2,9 +2,17 @@
 
 ### 목차
 
+- [Git](./Git)
 - [Django](./Django/README.md)
 - [Javascript](./Javascript/README.md)
 - [Web](./Web)
+
+
+
+
+### Git
+
+- [원격저장소에서 특정 폴더만 클론하기](./Git/clone_to_sub_directory.md)
 
 
 
