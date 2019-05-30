@@ -6,6 +6,8 @@
 - [Django](./Django/README.md)
 - [Javascript](./Javascript/README.md)
 - [Web](./Web)
+- [HTML](./HTML)
+- [CSS](./CSS)
 
 
 
@@ -65,4 +67,19 @@
 
 - [HTTP 와 HTTPS ](./Web/http_and_https.md)
 - [Browser의 동작 원리](./Web/browser.md)
+- [Web Server](./Web/web_server.md)
+- [미들웨어와 WAS](./Web/was.md)
+
+
+
+### HTML
+
+- [미들웨어와 WAS](./HTML/layout_tags.md)
+
+
+
+### CSS
+
+- [css 선언](./CSS/css_basic.md)
+- [css 상속과 우선순위](./CSS/css_basic2.md)
 

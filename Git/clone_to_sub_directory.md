@@ -52,11 +52,11 @@ $ git config core.sparseCheckout true
 
 
 
-### 4. spars-checkout파일에 checkout폴더 등록
+### 4. sparse-checkout파일에 checkout폴더 등록
 
 ```shell
 # spars-checkout파일 생성 및 가져올 폴더명 등록
-$ echo "{checkout하고 싶은 파일이나 디렉토리}" >> .git/info/spars-checkout
+$ echo "{checkout하고 싶은 파일이나 디렉토리}" >> .git/info/sparse-checkout
 ```
 
 
