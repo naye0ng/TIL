@@ -8,7 +8,7 @@
 - [Web](./Web)
 - [HTML](./HTML)
 - [CSS](./CSS)
-
+- [Algorithm](./Algorithm)
 
 
 
@@ -74,7 +74,7 @@
 
 ### HTML
 
-- [미들웨어와 WAS](./HTML/layout_tags.md)
+- [시멘틱 태그](./HTML/layout_tags.md)
 
 
 
@@ -82,4 +82,12 @@
 
 - [css 선언](./CSS/css_basic.md)
 - [css 상속과 우선순위](./CSS/css_basic2.md)
+
+
+
+### Algorithm
+
+- [완전 검색](./Algorithm/exaustive_search.md)
+- [그리디](./Algorithm/greedy.md)
+- [버블 정렬](./Algorithm/bubble_sort.md)
 
