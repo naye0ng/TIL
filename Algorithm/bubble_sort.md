@@ -18,19 +18,19 @@
 ### 1. [55, 7, 78, 12, 42] 버블정렬 과정
 
 **1단계**
-![1단계](/Users/nayeong/TIL/Algorithm/images/buuble1.png)
+![1단계](./images/buuble1.png)
 
 **2단계**
-![2단계](/Users/nayeong/TIL/Algorithm/images/buuble2.png)
+![2단계](./images/buuble2.png)
 
 **3단계**
-![3단계](/Users/nayeong/TIL/Algorithm/images/buuble3.png)
+![3단계](./images/buuble3.png)
 
 **4단계**
-![4단계](/Users/nayeong/TIL/Algorithm/images/buuble4.png)
+![4단계](./images/buuble4.png)
 
 **5단계**
-![5단계](/Users/nayeong/TIL/Algorithm/images/buuble5.png)
+![5단계](./images/buuble5.png)
 
 
 

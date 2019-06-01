@@ -34,5 +34,5 @@
 
 - 카드의 숫자를 조사한 후, 각 run과 triplet을 조사한다.
 
-![그리디로 baby-gin 풀이](/Users/nayeong/TIL/Algorithm/images/babyginGreedy.png)
+![그리디로 baby-gin 풀이](./images/babyginGreedy.png)
 
