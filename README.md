@@ -90,4 +90,5 @@
 - [완전 검색](./Algorithm/exaustive_search.md)
 - [그리디](./Algorithm/greedy.md)
 - [버블 정렬](./Algorithm/bubble_sort.md)
+- [계수 정렬](./Algorithm/counting_sort.md)
 
