@@ -91,4 +91,7 @@
 - [그리디](./Algorithm/greedy.md)
 - [버블 정렬](./Algorithm/bubble_sort.md)
 - [계수 정렬](./Algorithm/counting_sort.md)
+- [부분집합](./Algorithm/subset.md)
+- [순차 검색](./Algorithm/sequential_search.md)
+- [이진 검색](./Algorithm/binary_search.md)
 
