@@ -94,4 +94,5 @@
 - [부분집합](./Algorithm/subset.md)
 - [순차 검색](./Algorithm/sequential_search.md)
 - [이진 검색](./Algorithm/binary_search.md)
+- [선택 정렬](./Algorithm/selection_sort.md)
 
