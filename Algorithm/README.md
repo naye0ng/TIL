@@ -8,6 +8,7 @@
 - [x] 순차 검색(sequential Search)
 - [x] 이진 검색(Binary Search)
 - [x] 선택 정렬(Seletion Sort)
+- [x] 문자열 패턴 찾기(Brute Force, KMP, Boyer Moore)
 - [ ] 퀵 정렬(Quick Sort)
 - [ ] 삽입 정렬(Insertion Sort)
 - [ ] 병합 정렬(Merge Sort)

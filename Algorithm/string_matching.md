@@ -121,14 +121,71 @@ def bruteForce(target, pattern) :
 
 
 
-### 3-1. 보이어-무어에서 발생가능한 문제점
+### 3-1. 보이어-무어
+
+**1 단계**
+
+- 불일치가 발생하면 남은 패턴의 영역 중 일치하는 문자를 찾아 이동한다.
+
+| g | c | t | t | <span style="color:red;">c</span> | **t** | **g** | **c** | t | a | c | c | t | t | t | t | g | c | g | c | g | c |
+
+| c | <span style="color:blue;">c</span> | t | t | <span style="color:red;">t</span> | **t** | **g** | **c** | 
+
+
+
+**2단계**
+
+- 남은 패턴 중 일치하는 문자가 존재하지 않는다면, 그 문자 바로 뒤부터 다시 검색을 진행한다.
+
+| g | c | t | t | c | t | g | c | t | <span style="color:red;">a</span> | **c** | c | t | t | t | t | g | c | g | c | g | c |
+
+​				 | c | c | t | t | t | t | <span style="color:red;">g</span> | **c** | 
+
+
+
+**3단계**
+| g | c | t | t | c | t | g | c | t | a | **c** | **c** | **t** | **t** | **t** | **t** | **g** | **c** | g | c | g | c | 
+
+​														   | **c** | **c** | **t** | **t** | **t** | **t** | **g** | **c** | 
+
+
+
 
 
 
 ### 3-2. 보이어-무어 구현
 
 ```python
-# 더 공부가 필요함
+def boyerMoore(t, p) :
+    M = len(t)
+    N = len(p)
+
+    i = j = N-1
+    while i < M :
+        for k in range(N) :
+            if t[i-k] != p[j-k] :
+                # 같지 않다면, p[j-k] for문으로 앞을 수색하면서 t[i-k]와 같은 값이 있나 찾기
+                break
+            if k == N-1 :
+                return str(i-k)+"에서 일차하는 문자열 찾음"
+
+        findThis = t[i-k]
+        for r in range(k+1, N) :
+            if p[j-r] == findThis :
+                # 일치하는 것이 있다면
+                i += r-k
+                break
+        if r == N-1 :
+            # 일치하는 것이 없다면, N만큼 이동
+            i += N-k 
+        j = N-1
+    return "일치하지 않음"
+
+# 실행
+print(boyerMoore("gcttctgctaccttttgcgcgc","ccttttgc"))
+
+# 결과
+# 10에서 일차하는 문자열 찾음
 ```
 
 
