@@ -151,8 +151,6 @@ def bruteForce(target, pattern) :
 
 
 
-
-
 ### 3-2. 보이어-무어 구현
 
 ```python

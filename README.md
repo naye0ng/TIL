@@ -95,4 +95,6 @@
 - [순차 검색](./Algorithm/sequential_search.md)
 - [이진 검색](./Algorithm/binary_search.md)
 - [선택 정렬](./Algorithm/selection_sort.md)
+- [문자열 패턴 검색](./Algorithm/string_matching.md)
+- [스택](./Algorithm/stack.md)
 
