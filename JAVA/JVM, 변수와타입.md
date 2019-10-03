@@ -219,7 +219,7 @@ public static void main(String[] args){}
 ```
 # 묵시적 형변환 =>
 byte형 → short형 → int형 → long형 → float형 → double형
-					char형 ↗
+         char형 ↗
 # 명시적 형변환 <=
 ```
 
