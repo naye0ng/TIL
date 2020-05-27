@@ -10,6 +10,9 @@
 - [CSS](./CSS)
 - [Algorithm](./Algorithm)
 - [Operating System](./OS)
+- [Basic Javascript](./Basic_Javascript)
+
+
 
 
 ### Git
@@ -60,6 +63,13 @@
 - [영화 정보 원 페이지 어플리케이션](./Javascript/2019-05-10-vue.js.md)
 - [HTTP & RESTful Architecture](./Javascript/2019-04-24-http&restful.md)
 - [firebase 사용하기](./Javascript/2019-05-08-firebase.md)
+
+
+### Basic Javascript
+
+- [Javascript 기본 - 데이터 타입과 변수, 객체, 변수 호이스팅](./Basic_Javascript/자바스크립트기본1.md)
+- [Javascript 기본 - 함수와 함수 호이스팅, 함수 객체의 프로퍼티, 프로토타입(Prototype), 프로토타입 체인](./Basic_Javascript/자바스크립트기본2.md)
+- [Javascript 기본 -  자바스크립트의 스코프, 렉시컬 스코프, 암묵적 전역, 함수 호출 방식과 this, 클로저(Closure)](./Basic_Javascript/자바스크립트기본3.md)
 
 
 
