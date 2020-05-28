@@ -73,6 +73,7 @@
 - [Javascript 기본 -  자바스크립트의 스코프, 렉시컬 스코프, 암묵적 전역, 함수 호출 방식과 this, 클로저(Closure)](./Basic_Javascript/자바스크립트기본3.md)
 - [자바스크립트와 DOM API - DOM tree, DOM API](./Basic_Javascript/자바스크립트와DOM.md)
 - [자바스크립트의 이벤트 - Event Loop, Concurrency, addEventListener , 이벤트 전파(버블링, 캡처링), 전파 방지](./Basic_Javascript/자바스크립트의이벤트.md)
+- [자바스크립트와 ES6 - let, const, promise, async, await, arrow function](./Basic_Javascript/자바스크립트와ES6.md)
 
 
 

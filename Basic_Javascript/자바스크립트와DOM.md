@@ -1,4 +1,4 @@
-## Document Object Model
+# Document Object Model
 
 > 문서 객체 모델(Document Object Model)
 
