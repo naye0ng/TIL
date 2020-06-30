@@ -1,0 +1,161 @@
+@font-face {
+    font-family: "GyeonggiBatang";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+    vertical-align: baseline;
+    box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, main {
+	display: block;
+}
+* {
+    font-family: 'GyeonggiBatang', sans-serif;
+}
+html, body{
+    font-size: 15px;
+    height: 100vh;
+}
+*:focus{
+    outline:none;
+}
+header, section{
+    padding : 15px;
+    text-align: center;
+}
+header button{
+    margin-top: 2vh;
+    padding: 8px 10px;
+    background: #fff;
+    letter-spacing: 0.05em;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+}
+header button:hover{
+    background: #ddd;
+}
+.title{
+    margin:5vh 0 2vh;
+    font-size: 35px;
+}
+.planets{
+    display: block;
+    margin: 5vh 15vw;
+    overflow: hidden;
+    border: 1.5px solid #ddd;
+    border-radius: 15px;
+}
+.planets .planet-box{
+    display: inline-block;
+    overflow: hidden;
+    float: left;
+    width: calc((70vw - 30px - 3px) / 8);
+    height: calc((70vw - 30px - 3px) / 8);
+    padding: 1.5%;
+    border-right: 1.5px solid #ddd;
+    text-align: center;
+}
+.planets .planet-box:last-child{
+    border: none;
+}
+.planets .planet-box:last-child::after{
+    content: "";
+    display:block; 
+    clear:both;
+}
+.planet{
+    width: 100%;
+    max-width: 96px;
+}
+.compare-planets{
+    text-align: center;
+}
+.scale{
+    display: inline-block;
+    width: 320px;
+    height: 120px;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background: #ddd;
+    border-radius: 15px;
+}
+.scale div{
+    display: inline-block;
+    background: #fff;
+    border-radius: 50%;
+    float: left;
+}
+.scale div:last-child::after{
+    content: "";
+    display:block; 
+    clear:both;
+}
+.scale-left, .scale-right{
+    width: 100px;
+    height: 100px;
+}
+.scale-result{
+    width: 50px;
+    height: 50px;
+    margin: 25px 15px;
+    padding-top:10px;
+    font-size: 30px;
+}
+.compare-planets b.used-counter{
+    color: blue;
+}
+.compare-planets span{
+    font-size: 85%;
+}
+.compare-planets span b.recommend{
+    color: red;
+}
+.result-description{
+    margin: 7vh 15vw 2vh 15vw;
+}
+.result{
+    display: block;
+    margin: 0 15vw;
+    overflow: hidden;
+    border-radius: 15px;
+    border: 1.5px solid #ddd;
+}
+.result .planet-box2{
+    display: inline-block;
+    overflow: hidden;
+    float: left;
+    width: calc((70vw - 30px - 3px) / 8);
+    height: calc((70vw - 30px - 3px) / 8);
+    padding: 1.5%;
+    text-align: center;
+    border-right: 1.5px solid #ddd;
+    text-align: center;
+}
+.result .planet-box2:last-child{
+    border: none;
+}
+.result .planet-box2:last-child::after{
+    content: "";
+    display:block; 
+    clear:both;
+}

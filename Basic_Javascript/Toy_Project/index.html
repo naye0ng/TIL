@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>무게 맞추기 게임</title>
+</head>
+
+<body>
+    <header>
+        <p class="title">행성 무게 맞추기 게임</p>
+        <p>행성을 마우스로 드래그하여 무거운 순서대로 배열하시오.</p>
+        <button>RESTART</button>
+    </header>
+    <section>
+        <article class="planets" ondragover="allowDrop(event)" ondrop="drop(event)">
+        </article>
+        <article class="compare-planets">
+            <div class="scale">
+                <div class="scale-left" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+                <div class="scale-result"></div>
+                <div class="scale-right" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+            </div>
+            <div class="counter">
+                <p>
+                    현재 사용 회수 : <b class="used-counter">11</b>회
+                    <span>
+                        (최소 권장 회수 : <b class="recommend">11</b>회)
+                    </span>
+                </p>
+            </div>
+        </article>
+        <p class="result-description">무거운 행성일수록 왼쪽에 위치합니다.</p>
+        <article class="result" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+            <div class="planet-box2"></div>
+        </article>
+    </section>
+
+    <script>
+        init()  // 초기화
+        function init(){
+            // [1] 행성 객체 생성
+            const planetNames = ['earth', 'jupiter', 'mars', 'mercury', 'neptune', 'saturn', 'uranus', 'venus']
+            const planets = planetNames.map((name) => {
+                return new Planet(name);
+            })
+
+            // [2] 드래그 가능한 행성 이미지 삽입하기
+            const planetWrapper = document.querySelector('article.planets');
+            let planetElements = '';
+            for (let planet of planets) {
+                planetElements += `<div class="planet-box" ondrop="drop(event)">
+                <img src="./images/${planet.name}.png" weight="${planet.weight}" id="${planet.name}" class="planet" draggable="true" ondragstart="drag(event)" />
+            </div>`;
+            }
+            planetWrapper.innerHTML = planetElements;
+        }
+    
+        // [3] 행성 무게 비교
+        const scaleResult = document.querySelector('div.scale-result');
+        const counter = document.querySelector('b.used-counter');
+        const scale = {
+            left: document.getElementsByClassName('scale-right')[0],
+            right: document.getElementsByClassName('scale-left')[0],
+            setResult: function () {
+                if (this.left.firstChild === null || this.right.firstChild === null) {
+                    scaleResult.innerHTML = '';
+                } else if (this.left.firstChild.getAttribute('weight') > this.right.firstChild.getAttribute('weight')) {
+                    scaleResult.innerHTML = '>';
+                    counter.innerHTML -= 1;
+                } else {
+                    scaleResult.innerHTML = '<';
+                    counter.innerHTML -= 1;
+                }
+            },
+            removeScale: function(){
+                if(this.left.firstChild !== null){
+                    this.left.firstChild.remove();
+                }
+                if(this.right.firstChild != null){
+                    this.right.firstChild.remove();
+                }
+                this.setResult()
+            } 
+        }
+
+        // [4] result에 모든 행성이 들어오면 맞고 틀림을 내보내기
+        const resultWrapper = document.getElementsByClassName('planet-box2');
+        function open_alert() {
+            let strAnswer = ['맞았습니다.', '틀렸습니다.'];
+            let answer = 0;
+            for (let i = 0; i < 7; i++) {
+                if (resultWrapper[i].firstChild.getAttribute('weight') < resultWrapper[i + 1].firstChild.getAttribute('weight')) {
+                    answer = 1
+                    break
+                }
+            }
+            alert(strAnswer[answer])
+        }
+
+        // [5] 초기화 버튼
+        document.querySelector('button').addEventListener('click', function(e){
+            // 초기화
+            scale.removeScale()
+            Array.prototype.forEach.call(resultWrapper, function(el){
+                if(el.childElementCount == 1){
+                    el.firstChild.remove();
+                }
+            })
+            init();
+            })
+
+        // 드래그 앤 드롭 이벤트
+        function Planet(name) {
+            this.name = name;
+            this.weight = Math.random();
+        }
+
+        function drag(e) {
+            e.dataTransfer.setData("text", e.target.id);
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            // 행성은 한 칸에 한 개만 들어갈 수 있다.
+            if (e.target.nodeName === 'DIV' && e.target.childElementCount === 0) {
+                e.preventDefault();
+                var data = e.dataTransfer.getData("text");
+                e.target.appendChild(document.getElementById(data));
+                // 저울 조절
+                scale.setResult()
+                // 결과
+                let is_end = Array.prototype.every.call(resultWrapper, function (el) {
+                    return el.childElementCount > 0
+                })
+                if (is_end) {
+                    setTimeout(open_alert, 300);
+                }
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
