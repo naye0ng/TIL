@@ -74,6 +74,7 @@
 - [자바스크립트와 DOM API - DOM tree, DOM API](./Basic_Javascript/자바스크립트와DOM.md)
 - [자바스크립트의 이벤트 - Event Loop, Concurrency, addEventListener , 이벤트 전파(버블링, 캡처링), 전파 방지](./Basic_Javascript/자바스크립트의이벤트.md)
 - [자바스크립트와 ES6 - let, const, promise, async, await, arrow function](./Basic_Javascript/자바스크립트와ES6.md)
+- [Toy Project : 행성 무게 맞추기 게임](./Basic_Javascript/Toy_Project)
 
 
 
