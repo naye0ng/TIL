@@ -195,6 +195,14 @@ application layer에서는 메시지를 transport layer에 전달하는데, 어�
 - distributed database를 이용해 매핑정보를 저장하고 있다.
 - 모든 네트워크 어플리케이션에서 필요로 하는 작업이므로 네트워크 계층에서 제공하는 것이 합당해보이지만 어플리케이션 계층에서만 제공한다.(네트워크 계층에서는 패킷 전송에만 집중하기 위해서)
 
+>`도메인네임(domainname)` : 네트워크 상에서 컴퓨터를 식별하는 호스트이름을 가리키며, 도메인 레지스트리에 등록된 이름
+>
+>예) 네이버의 메인 페이지 주소인 naver.com이 도메인네임이 된다.
+
+>`호스트네임(hostname)` : 네트워크에 연결된 장치들에게 부여되는 고유한 이름
+>
+>예) 네이버 메일과 웹툰의 경우 각각 mail.naver.com와 comic.naver.com를 사용하는데, 여기서 mail과 comic이 호스트네임이고 naver.com이 도메인네임이 된다.
+
 
 
 ### I. DNS 역할
@@ -255,30 +263,124 @@ application layer에서는 메시지를 transport layer에 전달하는데, 어�
 - `identification` : 
 
   - query를 내보낼 때, 특정 숫자를 실어 보내면 reply 메시지를 내보낼때도 같은 숫자를 복사해서 보낸다. 이로인해 query와 reply를 짝지을 수 있게 된다.
-
 - `flags` : 
 
   - query와 reply를 구분
   - recursion 여부를 표시해서 보냄
   - reply가 authorirative인지 알려줌
 
-  
+- `questions`
+  - name, type이 들어간다.
+  - 즉, name = hostname, type=A를 던질 수 있다.
+- `answers `
+  - 응답을 담아서 보내준다.(RR)
+- `authority`
+  - authoritative DNS server에서 보낸 응답인지 알려줌
+- `additional info` 
+  - 더 필요할 수 있는 추가정보들
 
 
 
+### V. DNS records
+
+- DNS : distributed db storing resources records (RR)
+
+- **RR format : (name, value, type, ttl)**
+
+  1. type = A : 기본
+
+     - name = hostname
+     - value = IP
+
+  2. type = CNAME : 별명과 연결해줄 때
+
+     - name = alias name
+     - value = canonical name
+
+  3. type = MX : 어떤 도메인의 메일서버
+
+     - name : domainname
+     - value : mail srever name
+
+  4. type = NS : 
+
+     - name : domainname 
+     - value : 해당 domainname을 담당하는 authoritative name server
+
+     
+
+#### 그렇다면, 각각의 도메인 서버들은 어떤 종류의 RR을 가지고 있을까?
+
+- **Root** : 각 TLD에 대한 정보를 가지고 있다. 즉, `NS type`의 RR을 사지고 있다.
+- **TLD** : 각 authoritative DNS server의 정보를 가지고 있는데, 그들에 대한 `NS type`에 대한 정보를 가지고 있다.
+- **Authoritative** : hostname을 IP 주소를 변환하는 역할, 즉 기본적으로 `A type`을 가지고 있다.
 
 
 
+>**도메인 생성과정**
+>
+>![image-20201101131131641](image/CH2_애플리케이션계층/image-20201101131131641.png)
+>
+>1. A라는 회사가 탄생했다.
+>2. 자신의 회사 안에 authoritative DNS server를 설치 및 구매한다. (자신의 회사의 모든 컴퓨터에 대한 hostname과 IP주소를 저장하기 위해서) + 추가로 메일 서버나 웹 서버를 추가로 구매한다.
+>3. 외부 세상에서 회사의 웹 서버에 접속할 수 있도록하기 위해, 구매한 웹 서버의 hostname과 IP 주소를 매핑하는 type A 레코드를 자신의 authoritative DNS server에 저장해둔다.(메일 서버도 마찬기지로 등록한다. 이때는 MX타입과 A타입 모두 필요함)
+>4. .com 도메인을 관리하는 TLD 서버에 회사의 서비스를 등록하다.(회사의 authoritative DNS server의 이름과 IP주소를 알려준다. NS type) : 도메인 등록하는 과정
+>
+>**일반 사용자가 해당 도메인에 접속하는 과정**
+>
+>1. 사용자가 A라는 회사의 도메인으로 브라우저에 접속한다
+>2. 그럼 사용자가 속한 local DNS name server에서 TLD를 뒤져서 .com 부분에 A회사의 값이 있는지 조회한다. 없다면 TLD로 A회사의 authoritative DNS server의 주소를 요청한다.
+>3. A회사의 authoritative DNS server에 다시 IP 주소를 달라는 요청을 넘긴다.
+>4. authoritative DNS server는 사용자에게 IP주소를 알려준다.
+>5. 사용자가 A 사이트에 접속할 수 있게 된다.(HTTP 리퀘스트를 보낸다.)
 
 
 
+## 2.4. socket programming: TCP, UDP
+
+`socket`은 application layer와 transport layer 사이의 상호작용이다.
 
 
 
+### I. socket programming with UDP
+
+- UDP는 클라이언트와 서버 사이의 connection을 setup하지 않고 바로 메시지를 보낸다. 그래서 데이터를 보내기 전에 handshaking 과정이 없다. 그래서 **각 데이터마다 목적지 주소(IP와 port)를 붙여서 보내야한다.**
+- 서버쪽에서는 보통 80포트로 웹 프로세스를 실행시키고 있어서 클라이언트가 요청을 보낼때, 문제가 되지 않는다. 그렇다면 **서버에서 클라이언트로 응답을 보낼 때, 클라이언트의 포트번호는 어떻게 알아낼 것인가? 요청으로 들어온 세그먼트를 통해 알아낸다.**
 
 
 
+#### 1. UDP 통신 과정
+
+| UDP server                                                   | client                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 서버의 프로세스가 실행되고 소켓이 생성된다. 이 프로세스의 포트번호는 지정된 값이어야 한다. |                                                              |
+|                                                              | 클라이언트 소켓이 생성된다.<br />클라이언트 소켓(내보내는 메시지)에 서버의 IP주소와 port번호를 붙여서 보낸다. |
+| 네트워크로부터 전달된 클라이언트 소켓을 서버소켓이 읽는다.   |                                                              |
+| 서버 소켓으로 응답을 내보낸다. 당연히, UDP이므로 클라이언트의 IP와 port번호를 붙여줘야 한다.<br />***(문제는 클라이언트 프로세스도 자신의 IP와 port번호를 모른다. 클라이언트의 소켓은 OS가 알아서 임의로 생성하기 때문)*<br />클라이언트에서 UDP로 소켓을 내보낼 때, 자신의 IP와 port번호를 붙여서 보내준다. 이를 활용해서 클라이언트의 IP와 port를 알아내고 응답을 생성해서 보내준다.** |                                                              |
+|                                                              | 클라이언트는 자신의 소켓을 통해서 전달받은 데이터를 읽는다.  |
+|                                                              | 클라이언트 소켓을 닫는다.                                    |
+| 서버 소켓은 계속 실행중이다. (사전 connection이 없는 UDP의 경우, 언제 어디서 요청이 들어올지 모르기 때문) |                                                              |
 
 
+
+### II. socket programming with TCP
+
+- 서버의 TCP 프로세스가 실행되고 소켓(door)을 하나 미리 생성한다. 이때의 소켓은 클라이언트의 연결 요청을 받아들이기 위한 용도이다.(`door socket`이라고 부른다.)
+- 클라이언트에서도 앱이 실행되고 TCP 소켓이 생성된다. 그리고 이 소켓에는 연결할 서버의 IP와 port번호가 포함된다. 그리고 이 클라이언트 TCP 소켓이 생성되면서 서버쪽 TCP 소켓과 connection을 맺게 된다.
+- 서버쪽의 door socket이 클라이언트로부터 connection 요청을 받으면 **이 클라이언트만을 위한 socket을 새로 생성하고 이를 통해 클라이언트와 통신한다.**(`connection socket`)
+- **그래서 TCP로 데이터를 주고 받을 때, connection을 setup한 뒤에는 목적지를 따로 명시하지 않는다.** 목적지를 명시하지 않아도 그 소켓을 통해서 내려오는 데이터가 어디서 오는지 이미 TCP 측에서 알고 있기 때문이다.
+
+
+#### 1. TCP 통신 과정
+
+| TCP server                                                   | client                                             |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| 서버의 프로세스가 실행되고 `door socket`이 생성된다. 이 프로세스의 포트번호는 지정된 값이어야 한다. |                                                    |
+| 커넥션 요청이 들어오길 기다린다.                             |                                                    |
+| `door socket`이 클라이언트 요청을 받아서 `connection socket`을 새로 생성한다.(TCP 연결을 수립한다.) | 클라이언트 소켓이 생성되고 서버에 연결을 요청한다. |
+|                                                              | 클라이언트 소켓을 통해 요청을 보낸다.              |
+| `connection socket`을 통해 요청을 받고 응답을 내보낸다.      |                                                    |
+|                                                              | 클라이언트는 응답을 읽은 뒤, 소켓을 종료한다.      |
+| `connection socket`을 종료한다.                              |                                                    |
 
 
