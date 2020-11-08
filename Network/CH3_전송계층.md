@@ -180,7 +180,7 @@ transport-layer에서 만들어 내는 세그먼트를 확인하면 header와 pa
 
 #### 1. head length
 
-- UDP(헤더길이 고정)와 다르게 **TCP header의 길**이를 알려주는 `head length`가 존재한다.
+- UDP(헤더길이 고정)와 다르게 **TCP header의 길이**를 알려주는 `head length`가 존재한다.
 - TCP 헤더를 살펴보면 고정 헤더 길이는 5줄(32bit x 5 = 4byte x 5 = **20byte**)
 
 
@@ -264,6 +264,197 @@ reliable data transfer를 지원하는 `timer`는 RTT와 관련이 있다. RTT�
 
 - TimeoutInterval = EstimatedRTT + 4\*DevRTT
   - 4\*DevRTT을 `safety margin`이라 한다.
+
+
+
+## 3.6 TCP reliable data transfer
+
+> Reliable data transfer를 지원하는 요소 : checksum, ack, nack, piplining, seq#, timer
+
+- TCP는 error control과 congestion control, flow control 간에 밀접한 관계를 가지고 있다.
+
+- 하나의 TCP 통신에서 사용하는 timer는 1개이다.
+
+
+
+### I. TCP sender events
+
+> TCP연결에서 sender는 client, server 모두가 될 수 있다. 여기에서는 sender 입장에서의 TCP event를 살펴본다.
+
+
+
+#### 1. TCP sender의 역할 3가지
+![image-20201108150923824](image/image-20201108150923824.png)
+
+1. application에서 내려보낸 정보를 segments로 포장한다. 즉, **TCP header를 추가**한다.
+
+   - 전달하려는 데이터의 seq #를 추가한다.
+   - checksum을 계산해서 추가한다.
+   - 현재 timer가 실행중이지 않다면 timer를 실행한다. **아직 ACK을 못받은 segment 중 가장 오래된 것에 대해 timer를 설정한다.**
+     - 이미 timer가 설정된 상태라는 것은 이미 이전에 보내진 segment가 존재하고 이것에 대한 ACK을 아직 못 받은 상태라는 의미이고 이때 timer를 설정할 필요가 없다.
+
+   ![image-20201108151044035](image/image-20201108151044035.png)
+
+2. **timeout이 발생한 segment를 재전송한다.**
+
+   - timer 재설정
+
+   ![image-20201108152659806](image/image-20201108152659806.png)
+
+3. ACK이 들어왔을 때, 현재까지 들어온 segments의 정보를 업데이트 한다.(몇 번째 바이트까지 받았고 다음엔 무엇을 받아야 하는지)
+
+   - 다음 요청 segment로 timer을 재설정한다.
+   
+   ![image-20201108152709662](image/image-20201108152709662.png)
+
+
+
+### II. TCP : transmission scenario
+
+![image-20201108153504183](image/image-20201108153504183.png)
+
+**lost ACK scenario**
+
+1. seq 92, 8byte를 보내면 다음에 받을 segments의 첫번째 byte의 seqNum은 100이다.
+2. ACK 100을 보낸다 : 나는 99번째 ACK까지는 받았으니 100번째에 해당하는 것을 보내줘
+3. 중간에 timeout이 발생하면, 다시 1번을 재전송한다.
+
+
+
+**premature timeout**
+
+1. seq 92, 8byte를 보내면 다음에 받을 segments의 첫번째 byte의 seqNum은 100이다.
+2. seq 100, 8byte를 보내면 다음에 받을 segments의 첫번째 byte의 seqNum은 120이다.
+3. ACK 100, ACK 120이 들어오기 전에 timeout이 발생한다. 다시 1번을 재전송한다.
+4. reciver에서는 이미 잘 들어온 seq 92가 들어오면 무시하고 마지막 ACK인 120을 보내서 seq 100의 중복된 전송을 막는다.
+
+![image-20201108154046710](image/image-20201108154046710.png)
+
+**cumulative ACK**
+
+1. seq 92, 8byte를 보내면 다음에 받을 segments의 첫번째 byte의 seqNum은 100이다.
+2. seq 100, 8byte를 보내면 다음에 받을 segments의 첫번째 byte의 seqNum은 120이다.
+3. ACK 100이 중간에 드롭된다. 그러나 ACK 120은 잘 들어왔다는 값을 받게 된다. 그러면 sender측에서는 1번에 대한 ACK을 못받았더라도 그 이후의 값에 대한 값까지 sender가 잘 받았음을 알게된다. 그러므로 1번 요청을 재전송하지 않는다.
+
+
+
+### III. TCP ACK generation
+
+> 여기에서는 receiver 입장에서의 TCP event를 살펴본다.
+
+- receiver의 입장에서는 sender가 보낸 TCP 요청이 network layer를 통해 올라온다.
+
+- `in-order segments` : 이전에 n번째 segment까지 잘 받았는데, 이번에 들어온 segment가 n+1인 경우로 순차적으로 들어온다.
+- `out-of-order segments` : 이전에 n번째까지 받아서 n+1을 기대하고 있는데, n+100과 같이 다른 값이 들어온 경우
+
+| event at receiver                                            | TCP receiver action                                          | ACK                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------- |
+| in-order로 잘 받았고, 아직 이 값에 대한 ACK을 보내지 않은 상황 | **최대 500ms를 기다린다.** `piplining`을 사용하고 `cumulative ACK`을 사용하므로 연속적으로 다른 in-order segments가 들어 올 수 있다. <br />(ACK을 만들기 위해 최소 20byte를 사용해야한다. 자원을 아끼기 위해...) | N-1을 보내지 않고 기다린다.           |
+| 기다리고 있는 상황에서 in-order segments가 들어왔다.         | 즉시, 두 가지 segments에 대한 ACK을 보낸다.                  | N번째까지 잘 들어왔다고 ACK을 보낸다. |
+| out-of-order segments가 들어왔다.                            | 바로 ACK을 보내는데, 이전에 보냈던 ACK을 다시 보내서 내가 받고 싶은 segment는 N번임을 알린다. <br />이때의 ACK을 `duplicate ACK`이라고 한다. | 이전 ACK인 N을 다시 보낸다.           |
+| N번에 해당하는 in-order segments가 들어온다.                 | 기다리지 않고 바로 다음 ACK을 보낸다.                        | N+1                                   |
+
+
+
+### IV. TCP fast retransmit
+
+TCP에서 timeout값은 생각보다 넉넉하게 측정된다. (TCP는 불필요한 retransmit을 피하고 싶어한다.) 그래서 전송 과정에서 발생한 오류를 알아채고 재전송하기까지 시간이 걸리는 편이다. 이를 보완하기 위해서 TCP는 어떤 작업을 수행할까?
+
+- TCP는 piplining을 수행하기 때문에 segments들이 연속적으로 들어온다. 이 때, 중간에 손실이 발생하면 receiver에서는 sender에게 `duplicate ACK`을 보낸다. **`duplicate ACK`이 연속으로 세번 들어오면 중간에 손실이 발생했음을 알 수 있다. 그래서 timeout이 발생하기 전에 `duplicate ACK`에 대한 재전송을 진행한다.**
+
+![image-20201108162802088](image/image-20201108162802088.png)
+
+>그런데, 왜 3번이나 `duplicate ACK`을 기다릴까? TCP는 불필요한 retransmit을 피하고 싶어한다. 그래서 한번  `duplicate ACK`이 들어오면 그냥 순서가 잘못 전달 됐을 수도 있음. 그러나 여러번  `duplicate ACK`이 들어오면 확실하게 손실이 있었음을 감지할 수 있다.
+
+
+
+## 3.7 flow control
+
+> receiver의 버퍼에서 overflow가 발생하는 것을 막기 위해 flow control을 수행한다.
+
+- TCP header에 `rwnd`라는 부분이 있는데  이 곳에 receiver 쪽의 남아 있는 버퍼 크기를 설정해서 보낸다. 이를 확인하고 sender 측에서는  `rwnd`의 크기를 넘지 않도록 segments만 보내게 된다.
+
+- `rwnd`는 들어올 segments에 대한 설정을 내보내는 segments header(ACK할때)에 설정해서 보내는 것
+
+
+
+## 3.8 Connenction Management
+
+> connection을 수립할 때, handshaking을 진행한다.
+
+- 내보내는 data에 대한 첫번째 sequence number를 뭐로 할지 결정한다.
+- 받게될 data에 대한 첫번째 sequence number를 뭐로 할지 결정한다.
+- 나의 receiver buffer에 대한 사이즈를 설정하고 위의 값들을 교환한다.
+
+
+
+> **TCP connection에서 2-way handshaking을 할 수 없는 이유**
+>
+> ![image-20201108165507250](image/image-20201108165507250.png)
+>
+> 1. 클라이언트가 connection을 request한다.
+>
+> 2. 서버는 connection을 받아들이고 ESRAB 상태로 전환한다.
+>
+> 3. 클라이언트도 서버로부터 connection이 열렸음을 듣고 ESRAB 상태가 된다.
+>
+> connection이 양측 다 ESRAB 상태이므로 데이터 교환을 수행한다. 어느 시점에서 교환이 종료된다. 서버는 connection을 close하면 해당 클라이언트와 했던 모든 교환 정보를 잊어버린다. 
+>
+> 그런데 connection이 종료된 상태에서 네트워크에서 돌고 돌다가 누락되었던 데이터가 전송되는 경우에 문제가 발생할 수 있다.
+>
+> 4. connection이 종료된 후에 다시 데이터가 들어오면 서버는 새로운 connection이라고 생각하고 다시 소켓을 열고 ESRAB 상태가 된다.(half open connection 상태)
+> 5. 이때 또다시 딜레이된 데이터가 들어오면 서버는 이값에 대한 응답을 내보낸다.
+>
+> 즉, **서버에서는 이 데이터에 대한 대답을 하게 되지만 클라이언트에서는 이를 알아 듣지 못하는 쓰레기 값이 생성된다.**
+
+
+
+### I. TCP 3-way handshake
+
+![image-20201108172259617](image/image-20201108172259617.png)
+
+- 하나의 TCP connection을 수립하면 **양방향으로 데이터 스트림이 전송**된다.
+
+
+
+### II. closing a connection
+
+> connection을 **닫는 것은 각 스트림에 대해 독립적으로 이뤄진다.** 자기가 내보내는 스트림에 대해서 커넥션을 닫는 플래그(FIN bit = 1)를 설정해서 내보낸다.
+
+
+
+1. client, server each close their side of connection
+   - send TCP segment with FIN bit = 1
+2. respond to received FIN with ACK
+   - 상대방이 보낸 FIN에 대해 ACK을 보내주면서 동시에 자신에 대한 FIN을 보낸다.
+3. 양 쪽에서 동시에 FIN 요청이 들어와도 독립적으로 이뤄지므로 문제가 되지 않는다.
+
+![image-20201108190513673](image/image-20201108190513673.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
